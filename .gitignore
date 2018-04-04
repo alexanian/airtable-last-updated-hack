@@ -1,0 +1,18 @@
+# API secrets
+secrets.js
+
+# Local storage
+localStorage/
+
+# Dependency directories
+node_modules/
+
+# IDE-specific files
+.idea/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
