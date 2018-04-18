@@ -5,6 +5,7 @@
   "main": "job.js",
   "dependencies": {
     "airtable": "^0.5.2",
+    "cron": "^1.3.0",
     "md5": "^2.2.1",
     "moment": "^2.22.1"
   },

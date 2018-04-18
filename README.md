@@ -19,13 +19,18 @@ and create a `secrets.js` file in the base directory of the repository with the 
     // Findable by clicking 'Help' in your base, then selecting 'API documentation'
     exports.airtableBase = 'BASE_ID';
 
+You will likely want to update the names of the tables in `configs.js` to match yours:
+
+    // Name of tables in airtabeBase that should, uh, be updated
+    exports.airtableTables = ['TABLE_NAME', 'ANOTHER_TABLE_NAME'];
+
 If you want to run this in production (i.e. acknowledging that the timestamps for this hack are not
 meaningful) then you will wish to edit the mode in `configs.js`:
 
     exports.mode = 'production';
 
-You can run the script by calling
+You can start the cron job by calling:
 
-    node job.js
+    node runner.js
   
-It writes some files and logs to the console right now, but doesn't do much else. 
+The cron job is set to run every 10 seconds because debugging. You can change this in `runner.js`.
