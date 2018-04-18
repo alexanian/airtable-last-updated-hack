@@ -19,9 +19,10 @@ and create a `secrets.js` file in the base directory of the repository with the 
     // Findable by clicking 'Help' in your base, then selecting 'API documentation'
     exports.airtableBase = 'BASE_ID';
 
-    // Name of tables in airtabeBase that have a Last Updated field and should, uh, be updated
-    exports.airtableTables = ['TABLE_NAME', 'ANOTHER_TABLE_NAME'];
+If you want to run this in production (i.e. acknowledging that the timestamps for this hack are not
+meaningful) then you will wish to edit the mode in `configs.js`:
 
+    exports.mode = 'production';
 
 You can run the script by calling
 

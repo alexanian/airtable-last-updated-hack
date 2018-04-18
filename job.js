@@ -1,7 +1,10 @@
 var airtable = require('airtable');
 var md5 = require('md5');
+var moment = require('moment');
 var fs = require('fs');
 var secrets = require('./secrets');
+var configs = require('./configs');
+
 
 // Set up connection to Airtable
 airtable.configure({
@@ -18,7 +21,7 @@ if (!fs.existsSync(hashDir)) {
 }
 
 // Retrieve records from all tables listed
-secrets.airtableTables.forEach(table => {
+configs.airtableTables.forEach(table => {
     var hashes = {};
 
     // Get previous data, if it exists
@@ -43,7 +46,7 @@ secrets.airtableTables.forEach(table => {
 
                 // If we don't delete this before comparison, we could
                 // get confused by the order of writing and storing records
-                delete fields['Last Updated'];
+                delete fields[configs.colToUpdate];
 
                 // Store the md5 of the current record
                 var hash = md5(JSON.stringify(fields));
@@ -54,7 +57,17 @@ secrets.airtableTables.forEach(table => {
                     console.log(hash == previous[id]);
 
                     if (hash != previous[id]) {
-                        // Update the last_updated field!
+                        // Get the current date (or date + time, if in development)
+                        var lastUpdated = moment().format(configs.timeStrings[configs.mode]);
+                        var update = {};
+                        update[configs.colToUpdate] = lastUpdated;
+
+                        // Update your last_updated field, woo!
+                        base(table).update(id, update, function(err, record) {
+                              if (err) { console.error(err); return; }
+                          });
+
+                        console.log(lastUpdated);
                     }
                 }
 
