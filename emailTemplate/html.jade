@@ -1,0 +1,11 @@
+div
+    p Hello! Your hack for a Last Updated field in Airtable just ran.
+    p The hack checked the following tables:
+        ul
+            each val in tablesChecked 
+                li #{val}
+    p And the following records were updated:
+        ul
+            each val in recordsUpdated
+                li #{val}
+    p Happy hacking!

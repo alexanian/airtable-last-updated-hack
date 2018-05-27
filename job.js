@@ -1,10 +1,11 @@
 var airtable = require('airtable');
+var async = require('async');
 var md5 = require('md5');
 var moment = require('moment');
 var fs = require('fs');
-var secrets = require('./secrets');
 var configs = require('./configs');
-
+var emailSender = require('./emailSender');
+var secrets = require('./secrets');
 
 // Set up connection to Airtable
 airtable.configure({
@@ -20,8 +21,11 @@ if (!fs.existsSync(hashDir)) {
 }
 
 exports.hackLastUpdated = function hackLastUpdated() {
+    // Each record that was updated will be included in email notifications
+    var recordsUpdated = [];
+
     // Retrieve records from all tables listed
-    configs.airtableTables.forEach(table => {
+    async.forEach(configs.airtableTables, function(table, callback) {
         var hashPath = hashDir + table + '.json';
         var hashes = {};
 
@@ -63,7 +67,10 @@ exports.hackLastUpdated = function hackLastUpdated() {
                             base(table).update(id, update, function(err, record) {
                                 if (err) { console.error(err); return; }
                             });
-                            console.log('Updated', id, fields);
+
+                            var updateNotification = 'Record ' + id + ': ' + JSON.stringify(fields); 
+                            console.log('Updated', updateNotification);
+                            recordsUpdated.push(updateNotification);
                         }
                     }
                 });
@@ -74,14 +81,28 @@ exports.hackLastUpdated = function hackLastUpdated() {
                 fetchNextPage();
             }, function done(err) {
                 // Log any errors
-                if (err) { console.error(err); return; }
+                if (err) { console.error(err); return callback(); }
 
                 // The cron job ends up infinitely updating if you don't delete this cache
                 delete require.cache[require.resolve(hashPath)];
 
                 // Write retrieved hashes to a file
                 fs.writeFileSync(hashPath, JSON.stringify(hashes));
+
+                callback();
             }
         );
+    }, function done() {
+        // All tables have been checked- optionally, notify the maintainer
+        if (configs.sendEmails) {
+                var mailData = {
+                    'tablesChecked' : configs.airtableTables,
+                    'recordsUpdated' : recordsUpdated
+                }
+
+                emailSender.sendMail(mailData, function () {
+                    console.log('Email sent!');
+                })
+            }
     })
 };

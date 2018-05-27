@@ -14,3 +14,7 @@ exports.timeStrings = {
 // You'll want to change this in production - should match one of the timeStrings
 // defined above.
 exports.mode = 'development';
+
+// We recommend e-mail notifications if you're running this on a server (you'll be
+// able to tell if the server goes down) but otherwise you might not want this
+exports.sendEmails = true;
