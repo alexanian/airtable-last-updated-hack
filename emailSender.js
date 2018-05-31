@@ -13,7 +13,7 @@ exports.sendMail = function(mailData, callback) {
     var mailOptions = {
         'to': secrets.maintainerEmail,
         'from': secrets.notificationEmail['address'],
-        'subject': 'Your Airtable Last Updated Hack Just Ran!'
+        'subject': 'Your Airtable Last Updated Hack Just Ran! | ' + secrets.airtableBase
     };
 
     // Get our jade template file and fill in variables

@@ -84,8 +84,10 @@ exports.hackLastUpdated = function hackLastUpdated() {
                 if (err) { console.error(err); return callback(); }
 
                 // The cron job ends up infinitely updating if you don't delete this cache
-                delete require.cache[require.resolve(hashPath)];
-
+                if (previousExists) {
+                    delete require.cache[require.resolve(hashPath)];
+                }
+                
                 // Write retrieved hashes to a file
                 fs.writeFileSync(hashPath, JSON.stringify(hashes));
 
@@ -96,8 +98,9 @@ exports.hackLastUpdated = function hackLastUpdated() {
         // All tables have been checked- optionally, notify the maintainer
         if (configs.sendEmails) {
                 var mailData = {
-                    'tablesChecked' : configs.airtableTables,
-                    'recordsUpdated' : recordsUpdated
+                    'tablesChecked': configs.airtableTables,
+                    'recordsUpdated': recordsUpdated,
+                    'airtableName': secrets.airtableBase
                 }
 
                 emailSender.sendMail(mailData, function () {
