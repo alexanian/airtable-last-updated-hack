@@ -3,7 +3,7 @@
     "name": "last-updated-hack",
     "script": "./runner.js",
     "watch": ["./"],
-    "ignore_watch": ["./localStorage/"],
+    "ignore_watch": ["./localStorage/*.json"],
     "instances": 1,
     "trace": true    
   }]
