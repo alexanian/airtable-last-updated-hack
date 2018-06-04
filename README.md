@@ -131,7 +131,7 @@ Now install the package you'll be using to run the job in the background:
 
 ```bash
     sudo npm install pm2 -g
-    sudo pm2 start pm2.ecosystem.json --only last-updated-hack
+    sudo pm2 start ./runner.js -i 1 --name "last-updated-hack" --trace --watch ./
 ```
 
 You can see what's running with:
