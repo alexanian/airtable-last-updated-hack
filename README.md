@@ -1,5 +1,9 @@
 # airtable-last-updated-hack
-Scripts using the [Airtable API](https://airtable.com/api) to allow a "last updated" field
+Scripts using the [Airtable API](https://airtable.com/api) to allow a "last updated" field.
+
+Updates as to whether Airtable supports this feature will likely appear in the
+[Last Modified Timestamp](https://community.airtable.com/t/last-modified-timestamp/8595)
+feature request on the Airtable community forum.
 
 ## What's happening here 
 
@@ -35,8 +39,8 @@ Download the code! Then navigate to the base directory and install packages with
 ```
 
 Get your AirTable API key ([instructions](https://support.airtable.com/hc/en-us/articles/219046777-How-do-I-get-my-API-key-))
-and create a `secrets.js` file in the base directory of the repository. Follow the `secrets-template.js`, which includes 
-the contents:
+and create a `secrets.js` file in the base directory of the repository. You can copy the `secrets-template.js` over to your
+`secrets.js` file. You'll then want to fill in the contents, which are:
 
 ```javascript
     // API key for Airtable base
@@ -65,8 +69,9 @@ You will likely want to update the names of the tables in `configs.js` to match 
     exports.airtableTables = ['TABLE_NAME', 'ANOTHER_TABLE_NAME'];
 ```
 
-If you want to run this in production (i.e. acknowledging that the timestamps for this hack are not
-meaningful) then you will wish to edit the mode in `configs.js`:
+If you want to run this in production (i.e. acknowledging that the HH:mm:ss timestamps for this hack
+are going to reflect when the script ran, not when the update happened, and just setting them to
+00:00:00) then you will wish to edit the mode in `configs.js`:
 
 ```javascript
     exports.mode = 'production';
@@ -78,14 +83,16 @@ change the flag in `configs.js`:
 ```javascript
     exports.sendEmails = false;
 ```
-You can start the cron job by calling:
+You can start a cron job by calling:
 
 ```bash
     node runner.js
 ```
-The cron job is set to run every 10 seconds because debugging. You can change this in `runner.js`.
+The cron job is set to run every 10 seconds in `development` mode. It will run once a day if you
+switch the mode to `production`. You can change this in by editing the `cronTimes` in `configs.js`
+to suit your needs.
 
-If you don't want to run this with a cron job, you can also run the job from the node interpreter:
+If you don't want to run this with a cron job, you can also run the script from the node interpreter:
 
 ```node
    // Within the node interpreter
@@ -93,10 +100,11 @@ If you don't want to run this with a cron job, you can also run the job from the
    job.hackLastUpdated();
 ```
 
-### Example: setting up a server to run this job
+### Step-by-step: setting up a server to run this job
 
-As above, you don't _have_ to run this on a server. It's nicer and more automatic this way. We ended
-up using a DreamCompute instance for this, which has the following
+You can just run a cron job on your computer, as in the example above. You don't _have_ to 
+get this running on a server. It's just nicer and more automatic this way. We ended up using
+a DreamCompute instance for this, which has the following
 [set up instructions](dreamcompute_link) but YMMV.
 
 Command to access the instance (substitute the name of your ssh file and IP):
