@@ -4,7 +4,7 @@
   "description": "Script using the Airtable API to allow a \"last updated\" field",
   "main": "job.js",
   "dependencies": {
-    "airtable": "^0.5.6",
+    "airtable": "^0.7.2",
     "async": "^1.5.0",
     "cron": "^1.3.0",
     "email-templates": "^2.0.1",
