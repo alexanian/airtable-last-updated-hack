@@ -1,11 +1,10 @@
-# airtable-last-updated-hack
-Scripts using the [Airtable API](https://airtable.com/api) to allow a "last updated" field.
+### This repo is now DEPRECATED. Airtable released a [Last Modified time field](https://support.airtable.com/hc/en-us/articles/360022745493-Last-modified-time-field) in May 2019. I do not know why you would choose to use this instead of their supported solution.
 
-Updates as to whether Airtable supports this feature will likely appear in the
-[Last Modified Timestamp](https://community.airtable.com/t/last-modified-timestamp/8595)
-feature request on the Airtable community forum.
+# airtable-last-updated-hack
 
 ## What's happening here 
+
+Scripts using the [Airtable API](https://airtable.com/api) to allow a "last updated" field.
 
 You give us the information to connect to an Airtable table, we check it on a schedule you specify
 and update a column ('Last Updated', though you can change the name) whenever we detect a change.
